@@ -22,9 +22,6 @@ dependencyResolutionManagement {
 rootProject.name = "ItCourses"
 include(":app")
 include(":core")
-include("feature")
 include("feature:auth")
-
-
 include(":feature:auth:api")
 include(":feature:auth:impl")
