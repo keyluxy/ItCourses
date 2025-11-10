@@ -1,6 +1,5 @@
 package com.example.impl.data.repository
 
-import androidx.compose.animation.core.tween
 import com.example.api.model.AuthUser
 import com.example.api.repository.IAuthRepository
 import com.example.core.database.dao.UserDao

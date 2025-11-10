@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    // register
+    <string name="register">Регистрация</string>
+
+    <string name="email">Email</string>
+    <string name="password">Пароль</string>
+    <string name="passwor_password">Повторить пароль</string>
+
+    <string name="register_error">Ошибка регистрации</string>
+    <string name="login_error">Ошибка авторизации</string>
+
+    <string name="label_email">example@gmail.com</string>
+    <string name="label_password">Введите пароль</string>
+    <string name="label_password_password">Введите пароль еще раз</string>
+    
+    <string name="exest_account">Уже есть аккаунт?</string>
+    <string name="enter">Войти</string>
+</resources>

@@ -40,6 +40,8 @@ kapt {
 
 dependencies {
 
+    implementation(platform(libs.androidx.compose.bom))
+
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
