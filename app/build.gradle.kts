@@ -59,9 +59,7 @@ dependencies {
 
     implementation(project(":feature:auth:api"))
     implementation(project(":feature:auth:impl"))
-
-
-
+    implementation(project(":core"))
 
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)

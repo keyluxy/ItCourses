@@ -1,4 +1,4 @@
-package com.example.impl.presentation.ui.login
+package com.example.impl.presentation.ui.register
 
 import android.content.Intent
 import android.net.Uri
@@ -10,10 +10,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -42,11 +40,11 @@ import com.example.impl.presentation.state.AuthUiState
 import com.example.impl.utils.ui.AuthField
 
 @Composable
-fun LoginScreenContent(
+fun RegistrationScreenContent(
     state: AuthUiState,
     onEvent: (AuthEvent) -> Unit,
-    onLoginClick: () -> Unit,
-    onRegisterClick: () -> Unit = {},
+    onRegisterClick: () -> Unit,
+    onLoginClick: () -> Unit = {},
 ) {
     val context = LocalContext.current
 
@@ -58,7 +56,7 @@ fun LoginScreenContent(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
-            text = stringResource(id = R.string.entry),
+            text = stringResource(id = R.string.register),
             fontSize = 28.sp,
             modifier = Modifier
                 .padding(top = 100.dp)
@@ -86,10 +84,20 @@ fun LoginScreenContent(
             label = stringResource(id = R.string.label_password),
         )
 
+        Spacer(modifier = Modifier.size(16.dp))
+
+        AuthField(
+            title = stringResource(R.string.passwor_password),
+            value = state.confirmPassword,
+            onValueChange = { onEvent(AuthEvent.ConfirmPasswordChanged(it)) },
+            placeholder = stringResource(id = R.string.label_password_password),
+            label = stringResource(id = R.string.label_password_password),
+        )
+
         Spacer(modifier = Modifier.size(24.dp))
 
         Button(
-            onClick = onLoginClick,
+            onClick = onRegisterClick,
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(30.dp),
             colors = ButtonDefaults.buttonColors(
@@ -98,12 +106,10 @@ fun LoginScreenContent(
             )
         ) {
             Text(
-                text = stringResource(id = R.string.entry),
+                text = stringResource(id = R.string.register),
                 fontSize = 14.sp,
             )
         }
-
-        Spacer(modifier = Modifier.height(16.dp))
 
         state.errorMessage?.let { message ->
             Text(
@@ -116,34 +122,24 @@ fun LoginScreenContent(
             )
         }
 
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Row(
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = stringResource(id = R.string.no_exist_account),
-                    fontSize = 12.sp,
-                    color = colorResource(id = coreR.color.white)
-                )
-                TextButton(onClick = onRegisterClick) {
-                    Text(
-                        text = stringResource(id = R.string.register),
-                        fontSize = 12.sp,
-                        color = colorResource(id = coreR.color.green)
-                    )
-                }
-            }
-
             Text(
-                text = stringResource(id = R.string.forgot_password),
-                color = colorResource(coreR.color.green),
-                fontSize = 12.sp
+                text = stringResource(id = R.string.exist_account),
+                fontSize = 12.sp,
+                color = colorResource(id = coreR.color.white)
             )
+            TextButton(onClick = onLoginClick) {
+                Text(
+                    text = stringResource(id = R.string.enter),
+                    fontSize = 12.sp,
+                    color = colorResource(id = coreR.color.green)
+                )
+            }
         }
-
 
         HorizontalDivider(
             modifier = Modifier
@@ -216,7 +212,7 @@ fun LoginScreenContent(
 @Preview(showBackground = true, backgroundColor = 0xFF151515)
 @Composable
 fun RegistrationScreenContentPreview() {
-    LoginScreenContent(
+    RegistrationScreenContent(
         state = AuthUiState(),
         onEvent = {},
         onLoginClick = {},

@@ -1,4 +1,4 @@
-package com.example.impl.presentation.ui.login
+package com.example.impl.presentation.ui.register
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -11,7 +11,7 @@ import com.example.impl.presentation.viewmodel.AuthViewModel
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 
 @Composable
-fun LoginScreen(
+fun RegistrationScreen(
     navController: NavController,
     viewModel: AuthViewModel = hiltViewModel(),
 ) {
@@ -20,15 +20,16 @@ fun LoginScreen(
     LaunchedEffect(Unit) {
         viewModel.onAuthSuccess = {
             navController.navigate(AuthRoutes.MAIN) {
-                popUpTo(AuthRoutes.LOGIN) { inclusive = true }
+                popUpTo(AuthRoutes.REGISTER) { inclusive = true }
             }
         }
     }
 
-    LoginScreenContent(
+    RegistrationScreenContent(
         state = state,
         onEvent = viewModel::onEvent,
-        onLoginClick = { viewModel.onEvent(AuthEvent.OnLoginClicked) },
-        onRegisterClick = { navController.navigate(AuthRoutes.REGISTER) }
+        onRegisterClick = { viewModel.onEvent(AuthEvent.OnRegisterClicked) },
+        onLoginClick = { navController.navigate(AuthRoutes.LOGIN) }
     )
 }
+

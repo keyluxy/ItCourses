@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    // register
     <string name="register">Регистрация</string>
 
+    <string name="entry">Вход</string>
+
     <string name="email">Email</string>
-    <string name="password">Пароль</string>
+    <string name="password">Пароль (не менее 6 символов)</string>
     <string name="passwor_password">Повторить пароль</string>
 
     <string name="register_error">Ошибка регистрации</string>
@@ -15,6 +16,13 @@
     <string name="label_password">Введите пароль</string>
     <string name="label_password_password">Введите пароль еще раз</string>
     
-    <string name="exest_account">Уже есть аккаунт?</string>
+    <string name="exist_account">Уже есть аккаунт?</string>
     <string name="enter">Войти</string>
+
+    <string name="no_exist_account">Нет аккаунта?</string>
+
+    <string name="forgot_password">Забыли пароль</string>
+
+    <string name="content_description_open_vk">открыть VK</string>
+    <string name="content_description_open_ok">открыть OK</string>
 </resources>
