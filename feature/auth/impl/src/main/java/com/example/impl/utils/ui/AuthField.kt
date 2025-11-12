@@ -24,6 +24,7 @@ internal fun AuthField(
     onValueChange: (String) -> Unit,
     placeholder: String,
     label: String,
+    isError: Boolean = false,
 ) {
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -70,7 +71,8 @@ internal fun AuthField(
                 focusedPlaceholderColor = colorResource(id = coreR.color.placeholder_color).copy(alpha = 0.7f),
                 unfocusedPlaceholderColor = colorResource(id = coreR.color.placeholder_color),
                 disabledPlaceholderColor = colorResource(id = coreR.color.placeholder_color).copy(alpha = 0.7f)
-            )
+            ),
+            isError = isError
         )
     }
 }

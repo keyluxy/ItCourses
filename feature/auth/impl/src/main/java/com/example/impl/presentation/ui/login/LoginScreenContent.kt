@@ -13,13 +13,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -68,53 +66,62 @@ fun LoginScreenContent(
 
         Spacer(modifier = Modifier.size(28.dp))
 
+        val isValid = state.emailError == null &&
+            state.passwordError == null &&
+            state.email.isNotBlank() &&
+            state.password.isNotBlank()
+
         AuthField(
             title = stringResource(R.string.email),
             value = state.email,
             onValueChange = { onEvent(AuthEvent.EmailChanged(it)) },
-            placeholder = stringResource(id = R.string.email),
-            label = stringResource(id = R.string.label_email),
+            placeholder = stringResource(id = R.string.label_email),
+            label = stringResource(id = R.string.email),
+            isError = state.isFormValidated && state.emailError != null
         )
-
+        if (state.isFormValidated && state.emailError != null) {
+            Text(text = state.emailError!!, color = Color.Red, fontSize = 12.sp)
+        }
         Spacer(modifier = Modifier.size(16.dp))
-
         AuthField(
             title = stringResource(R.string.password),
             value = state.password,
             onValueChange = { onEvent(AuthEvent.PasswordChanged(it)) },
             placeholder = stringResource(id = R.string.password),
             label = stringResource(id = R.string.label_password),
+            isError = state.isFormValidated && state.passwordError != null
         )
-
+        if (state.isFormValidated && state.passwordError != null) {
+            Text(text = state.passwordError, color = Color.Red, fontSize = 12.sp)
+        }
         Spacer(modifier = Modifier.size(24.dp))
-
+        if (state.errorResId != null) {
+            Text(
+                text = stringResource(id = state.errorResId),
+                color = Color.Red,
+                modifier = Modifier.padding(vertical = 8.dp),
+                fontSize = 14.sp
+            )
+        }
         Button(
             onClick = onLoginClick,
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(30.dp),
+            enabled = isValid && !state.isLoading,
             colors = ButtonDefaults.buttonColors(
                 containerColor = colorResource(id = coreR.color.green),
                 contentColor = colorResource(id = coreR.color.white),
+                disabledContainerColor = colorResource(id = coreR.color.disable),
+                disabledContentColor = colorResource(id = coreR.color.white),
             )
         ) {
             Text(
-                text = stringResource(id = R.string.entry),
+                text = "Войти",
                 fontSize = 14.sp,
             )
         }
 
         Spacer(modifier = Modifier.height(16.dp))
-
-        state.errorMessage?.let { message ->
-            Text(
-                text = message,
-                color = MaterialTheme.colorScheme.error,
-                fontSize = 13.sp,
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .padding(vertical = 8.dp)
-            )
-        }
 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally

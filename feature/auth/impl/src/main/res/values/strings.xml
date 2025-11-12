@@ -19,6 +19,8 @@
     <string name="exist_account">Уже есть аккаунт?</string>
     <string name="enter">Войти</string>
 
+    <string name="user_not_found_error">Пользователь не найден</string>
+
     <string name="no_exist_account">Нет аккаунта?</string>
 
     <string name="forgot_password">Забыли пароль</string>

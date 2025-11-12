@@ -17,7 +17,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -66,59 +65,65 @@ fun RegistrationScreenContent(
 
         Spacer(modifier = Modifier.size(28.dp))
 
+        val isValid = state.emailError == null &&
+            state.passwordError == null &&
+            state.confirmPasswordError == null &&
+            state.email.isNotBlank() &&
+            state.password.isNotBlank() &&
+            state.confirmPassword.isNotBlank()
+
         AuthField(
             title = stringResource(R.string.email),
             value = state.email,
             onValueChange = { onEvent(AuthEvent.EmailChanged(it)) },
-            placeholder = stringResource(id = R.string.email),
-            label = stringResource(id = R.string.label_email),
+            placeholder = stringResource(id = R.string.label_email),
+            label = stringResource(id = R.string.email),
+            isError = state.isFormValidated && state.emailError != null
         )
-
+        if (state.isFormValidated && state.emailError != null) {
+            Text(text = state.emailError!!, color = Color.Red, fontSize = 12.sp)
+        }
         Spacer(modifier = Modifier.size(16.dp))
-
         AuthField(
             title = stringResource(R.string.password),
             value = state.password,
             onValueChange = { onEvent(AuthEvent.PasswordChanged(it)) },
             placeholder = stringResource(id = R.string.password),
             label = stringResource(id = R.string.label_password),
+            isError = state.isFormValidated && state.passwordError != null
         )
-
+        if (state.isFormValidated && state.passwordError != null) {
+            Text(text = state.passwordError!!, color = Color.Red, fontSize = 12.sp)
+        }
         Spacer(modifier = Modifier.size(16.dp))
-
         AuthField(
             title = stringResource(R.string.passwor_password),
             value = state.confirmPassword,
             onValueChange = { onEvent(AuthEvent.ConfirmPasswordChanged(it)) },
             placeholder = stringResource(id = R.string.label_password_password),
             label = stringResource(id = R.string.label_password_password),
+            isError = state.isFormValidated && state.confirmPasswordError != null
         )
-
+        if (state.isFormValidated && state.confirmPasswordError != null) {
+            Text(text = state.confirmPasswordError, color = Color.Red, fontSize = 12.sp)
+        }
         Spacer(modifier = Modifier.size(24.dp))
 
         Button(
             onClick = onRegisterClick,
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(30.dp),
+            enabled = isValid && !state.isLoading,
             colors = ButtonDefaults.buttonColors(
                 containerColor = colorResource(id = coreR.color.green),
                 contentColor = colorResource(id = coreR.color.white),
+                disabledContainerColor = colorResource(id = coreR.color.disable),
+                disabledContentColor = colorResource(id = coreR.color.white)
             )
         ) {
             Text(
                 text = stringResource(id = R.string.register),
                 fontSize = 14.sp,
-            )
-        }
-
-        state.errorMessage?.let { message ->
-            Text(
-                text = message,
-                color = MaterialTheme.colorScheme.error,
-                fontSize = 13.sp,
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .padding(vertical = 8.dp)
             )
         }
 
