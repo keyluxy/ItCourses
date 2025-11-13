@@ -9,18 +9,21 @@ import com.example.api.navigation.AuthRoutes
 import com.example.impl.presentation.event.AuthEvent
 import com.example.impl.presentation.viewmodel.AuthViewModel
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import com.example.impl.presentation.viewmodel.AuthNavigationEvent
 
+// feature-auth-impl/src/main/java/com/example/impl/presentation/ui/register/RegistrationScreen.kt
 @Composable
 fun RegistrationScreen(
-    navController: NavController,
+    onRegisterSuccess: () -> Unit,
+    onNavigateToLogin: () -> Unit,
     viewModel: AuthViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsState()
 
     LaunchedEffect(Unit) {
-        viewModel.onAuthSuccess = {
-            navController.navigate(AuthRoutes.MAIN) {
-                popUpTo(AuthRoutes.REGISTER) { inclusive = true }
+        viewModel.navigationEvent.collect { event ->
+            when (event) {
+                is AuthNavigationEvent.NavigateToMain -> onRegisterSuccess()
             }
         }
     }
@@ -29,7 +32,7 @@ fun RegistrationScreen(
         state = state,
         onEvent = viewModel::onEvent,
         onRegisterClick = { viewModel.onEvent(AuthEvent.OnRegisterClicked) },
-        onLoginClick = { navController.navigate(AuthRoutes.LOGIN) }
+        onLoginClick = onNavigateToLogin
     )
 }
 

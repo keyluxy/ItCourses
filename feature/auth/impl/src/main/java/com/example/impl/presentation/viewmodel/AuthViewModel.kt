@@ -9,12 +9,18 @@ import com.example.impl.presentation.event.AuthEvent
 import com.example.impl.presentation.state.AuthUiState
 import com.example.impl.utils.validate
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
+sealed class AuthNavigationEvent {
+    object NavigateToMain : AuthNavigationEvent()
+}
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(
@@ -24,6 +30,9 @@ class AuthViewModel @Inject constructor(
 
     private val _state = MutableStateFlow(AuthUiState())
     val state: StateFlow<AuthUiState> = _state.asStateFlow()
+
+    private val _navigationEvent = MutableSharedFlow<AuthNavigationEvent>()
+    val navigationEvent = _navigationEvent.asSharedFlow()
 
     var onAuthSuccess: (() -> Unit)? = null
 
@@ -58,7 +67,7 @@ class AuthViewModel @Inject constructor(
             result.fold(
                 onSuccess = {
                     _state.update { it.copy(isLoading = false) }
-                    onAuthSuccess?.invoke()
+                    _navigationEvent.emit(AuthNavigationEvent.NavigateToMain)
                 },
                 onFailure = {
                     _state.update { it.copy(isLoading = false, errorResId = R.string.user_not_found_error) }
@@ -76,7 +85,7 @@ class AuthViewModel @Inject constructor(
             result.fold(
                 onSuccess = {
                     _state.update { it.copy(isLoading = false) }
-                    onAuthSuccess?.invoke()
+                    _navigationEvent.emit(AuthNavigationEvent.NavigateToMain)
                 },
                 onFailure = {
                     _state.update { it.copy(isLoading = false, errorResId = R.string.register_error) }

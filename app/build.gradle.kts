@@ -59,6 +59,8 @@ dependencies {
 
     implementation(project(":feature:auth:api"))
     implementation(project(":feature:auth:impl"))
+    implementation(project(":feature:buttom_nav:api"))
+    implementation(project(":feature:buttom_nav:impl"))
     implementation(project(":core"))
 
     implementation(libs.hilt.android)
@@ -66,7 +68,6 @@ dependencies {
     implementation(libs.hilt.navigation.compose)
 
     implementation(libs.androidx.navigation.compose)
-
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

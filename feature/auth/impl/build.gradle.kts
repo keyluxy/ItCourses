@@ -70,7 +70,6 @@ dependencies {
 
     implementation(libs.kotlinx.coroutines.core)
 
-    // Для работы превью в Android Studio
     debugImplementation(libs.androidx.ui.tooling)
 
 }
