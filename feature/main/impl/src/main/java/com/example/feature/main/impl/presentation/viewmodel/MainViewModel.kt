@@ -6,6 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import com.example.core.database.dao.FavoriteCourseDao
@@ -32,13 +33,12 @@ class MainViewModel @Inject constructor(
             coursesRepository.getCourses().fold(
                 onSuccess = { courses ->
                     // Загружаем избранные курсы и обновляем hasLike
-                    val favorites = favoriteCourseDao.getAllFavorites().collect { favoritesList ->
-                        val favoriteIdsSet = favoritesList.map { it.courseId }.toSet()
-                        val updatedCourses = courses.map { course ->
-                            course.copy(hasLike = course.id in favoriteIdsSet)
-                        }
-                        _uiState.update { it.copy(courses = updatedCourses, isLoading = false) }
+                    val favoritesList = favoriteCourseDao.getAllFavorites().first()
+                    val favoriteIdsSet = favoritesList.map { it.courseId }.toSet()
+                    val updatedCourses = courses.map { course ->
+                        course.copy(hasLike = course.id in favoriteIdsSet)
                     }
+                    _uiState.update { it.copy(courses = updatedCourses, isLoading = false) }
                 },
                 onFailure = { error ->
                     _uiState.update { it.copy(isLoading = false) }
@@ -63,8 +63,17 @@ class MainViewModel @Inject constructor(
             } else {
                 favoriteCourseDao.insertFavorite(course.toFavoriteEntity())
             }
-            // Обновляем состояние курсов
-            loadCourses()
+            // Обновляем состояние курсов локально
+            _uiState.update { currentState ->
+                val updatedCourses = currentState.courses.map { c ->
+                    if (c.id == course.id) {
+                        c.copy(hasLike = !c.hasLike)
+                    } else {
+                        c
+                    }
+                }
+                currentState.copy(courses = updatedCourses)
+            }
         }
     }
 }

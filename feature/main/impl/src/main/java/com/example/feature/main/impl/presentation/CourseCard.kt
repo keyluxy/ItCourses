@@ -18,6 +18,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -47,6 +48,11 @@ fun CourseCard(
     val cardInteractionSource = remember { MutableInteractionSource() }
     val favoriteInteractionSource = remember { MutableInteractionSource() }
     var isFavorite by remember { mutableStateOf(course.hasLike) }
+    
+    // Синхронизируем состояние избранного с данными курса
+    LaunchedEffect(course.hasLike) {
+        isFavorite = course.hasLike
+    }
 
     Box(
         modifier = Modifier
@@ -233,7 +239,7 @@ fun CourseCardPreview() {
     )
     CourseCard(
         course = testCourse,
-        imageResId = coreR.drawable.img_first,
+        imageResId = coreR.drawable.ic_first_image,
         onCardClick = { /* do nothing */ },
         onFavoriteClick = { /* do nothing */ }
     )

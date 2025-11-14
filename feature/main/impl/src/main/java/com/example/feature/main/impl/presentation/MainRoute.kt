@@ -48,14 +48,16 @@ fun MainRoute(
     val uiState by viewModel.uiState.collectAsState()
     MainScreen(
         uiState = uiState,
-        onSortClick = { viewModel.sortCoursesByPublishDate() }
+        onSortClick = { viewModel.sortCoursesByPublishDate() },
+        onFavoriteClick = { course -> viewModel.toggleFavorite(course) }
     )
 }
 
 @Composable
 internal fun MainScreen(
     uiState: MainUiState,
-    onSortClick: () -> Unit = {}
+    onSortClick: () -> Unit = {},
+    onFavoriteClick: (com.example.core.network.data.Course) -> Unit = {}
 ) {
     var searchText by remember { mutableStateOf("") }
     val filterInteractionSource = remember { MutableInteractionSource() }
@@ -190,25 +192,25 @@ internal fun MainScreen(
                     key = { _, course -> course.id }
                 ) { index, course ->
                     val imageResId = when {
-                        index == 0 -> coreR.drawable.img_first
-                        index == 1 -> coreR.drawable.img_second
-                        index == 2 -> coreR.drawable.img_three
+                        index == 0 -> coreR.drawable.ic_first_image
+                        index == 1 -> coreR.drawable.ic_second_image
+                        index == 2 -> coreR.drawable.ic_three_image
                         else -> {
                             // Для остальных чередуем первую и вторую картинку
                             if ((index - 3) % 2 == 0) {
-                                coreR.drawable.img_first
+                                coreR.drawable.ic_first_image
                             } else {
-                                coreR.drawable.img_second
+                                coreR.drawable.ic_second_image
                             }
                         }
                     }
 
-                    CourseCard(
-                        course = course,
-                        imageResId = imageResId,
-                        onCardClick = {},
-                        onFavoriteClick = {}
-                    )
+                CourseCard(
+                    course = course,
+                    imageResId = imageResId,
+                    onCardClick = {},
+                    onFavoriteClick = { onFavoriteClick(course) }
+                )
                 }
             }
         }
