@@ -6,16 +6,16 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import com.example.core.database.dao.FavoriteCourseDao
-import com.example.core.database.mapper.toCourse
+import com.example.core.domain.usecase.GetFavoritesUseCase
+import com.example.core.domain.usecase.RemoveFavoriteUseCase
 import com.example.feature.favorites.impl.presentation.FavoritesUiState
 
 @HiltViewModel
 class FavoritesViewModel @Inject constructor(
-    private val favoriteCourseDao: FavoriteCourseDao
+    private val getFavoritesUseCase: GetFavoritesUseCase,
+    private val removeFavoriteUseCase: RemoveFavoriteUseCase
 ) : ViewModel() {
 
     private val _uiState: MutableStateFlow<FavoritesUiState> = MutableStateFlow(FavoritesUiState())
@@ -28,25 +28,16 @@ class FavoritesViewModel @Inject constructor(
     private fun loadFavorites() {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
-            favoriteCourseDao.getAllFavorites()
-                .map { favorites ->
-                    favorites.map { it.toCourse() }
-                }
-                .collect { courses ->
-                    _uiState.update { it.copy(courses = courses, isLoading = false) }
-                }
+            getFavoritesUseCase().collect { courses ->
+                _uiState.update { it.copy(courses = courses, isLoading = false) }
+            }
         }
     }
 
     fun removeFavorite(courseId: Int) {
         viewModelScope.launch {
-            favoriteCourseDao.deleteByCourseId(courseId)
+            removeFavoriteUseCase(courseId)
             // loadFavorites() будет вызван автоматически через Flow
         }
     }
 }
-
-
-
-
-
