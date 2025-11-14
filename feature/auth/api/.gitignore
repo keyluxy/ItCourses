@@ -1,1 +1,19 @@
 /build
+*.iml
+.gradle/
+local.properties
+/.idea/
+/build/
+*/build/
+captures/
+.externalNativeBuild/
+.cxx/
+
+# Android Studio
+.DS_Store
+
+# Kotlin/Java build outputs
+*.class
+*.jar
+*.war
+*.ear

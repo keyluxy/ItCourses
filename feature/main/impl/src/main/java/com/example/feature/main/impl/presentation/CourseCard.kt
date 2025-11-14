@@ -239,7 +239,7 @@ fun CourseCardPreview() {
     )
     CourseCard(
         course = testCourse,
-        imageResId = coreR.drawable.ic_first_image,
+        imageResId = coreR.drawable.ic_second_image,
         onCardClick = { /* do nothing */ },
         onFavoriteClick = { /* do nothing */ }
     )

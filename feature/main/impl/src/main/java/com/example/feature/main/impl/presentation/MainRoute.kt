@@ -190,19 +190,14 @@ internal fun MainScreen(
                 itemsIndexed(
                     items = uiState.courses,
                     key = { _, course -> course.id }
-                ) { index, course ->
-                    val imageResId = when {
-                        index == 0 -> coreR.drawable.ic_first_image
-                        index == 1 -> coreR.drawable.ic_second_image
-                        index == 2 -> coreR.drawable.ic_three_image
-                        else -> {
-                            // Для остальных чередуем первую и вторую картинку
-                            if ((index - 3) % 2 == 0) {
-                                coreR.drawable.ic_first_image
-                            } else {
-                                coreR.drawable.ic_second_image
-                            }
-                        }
+                ) { _, course ->
+                    // Используем ID курса для определения картинки, чтобы картинка была привязана к курсу, а не к позиции
+                    // Равномерно распределяем все три картинки по остатку от деления на 3
+                    val imageResId = when (course.id % 3) {
+                        1 -> coreR.drawable.ic_first_image
+                        2 -> coreR.drawable.ic_second_image
+                        0 -> coreR.drawable.ic_three_image
+                        else -> coreR.drawable.ic_first_image
                     }
 
                 CourseCard(

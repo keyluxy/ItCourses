@@ -41,6 +41,8 @@ android {
 dependencies {
     implementation(project(":feature:favorites:api"))
     implementation(project(":core"))
+    implementation(project(":feature:main:api"))
+    implementation(project(":feature:main:impl"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

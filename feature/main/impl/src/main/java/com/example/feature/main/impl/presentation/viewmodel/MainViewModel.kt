@@ -7,6 +7,7 @@ import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import com.example.core.database.dao.FavoriteCourseDao
@@ -25,6 +26,7 @@ class MainViewModel @Inject constructor(
 
     init {
         loadCourses()
+        observeFavorites()
     }
 
     private fun loadCourses() {
@@ -45,6 +47,26 @@ class MainViewModel @Inject constructor(
                     // TODO: Обработка ошибки
                 }
             )
+        }
+    }
+
+    private fun observeFavorites() {
+        viewModelScope.launch {
+            favoriteCourseDao.getAllFavorites()
+                .map { favorites -> favorites.map { it.courseId }.toSet() }
+                .collect { favoriteIdsSet ->
+                    // Обновляем состояние избранного для всех курсов только если курсы уже загружены
+                    _uiState.update { currentState ->
+                        if (currentState.courses.isNotEmpty()) {
+                            val updatedCourses = currentState.courses.map { course ->
+                                course.copy(hasLike = course.id in favoriteIdsSet)
+                            }
+                            currentState.copy(courses = updatedCourses)
+                        } else {
+                            currentState
+                        }
+                    }
+                }
         }
     }
 

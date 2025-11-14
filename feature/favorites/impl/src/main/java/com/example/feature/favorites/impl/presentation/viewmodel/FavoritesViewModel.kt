@@ -41,7 +41,7 @@ class FavoritesViewModel @Inject constructor(
     fun removeFavorite(courseId: Int) {
         viewModelScope.launch {
             favoriteCourseDao.deleteByCourseId(courseId)
-            loadFavorites()
+            // loadFavorites() будет вызван автоматически через Flow
         }
     }
 }
