@@ -10,15 +10,17 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import com.example.core.database.dao.FavoriteCourseDao
-import com.example.core.database.mapper.toFavoriteEntity
-import com.example.core.network.domain.ICoursesRepository
+import com.example.core.domain.model.Course
+import com.example.core.domain.usecase.GetCoursesUseCase
+import com.example.core.domain.usecase.ObserveFavoriteIdsUseCase
+import com.example.core.domain.usecase.ToggleFavoriteUseCase
 import com.example.feature.main.impl.presentation.MainUiState
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val coursesRepository: ICoursesRepository,
-    private val favoriteCourseDao: FavoriteCourseDao
+    private val getCoursesUseCase: GetCoursesUseCase,
+    private val toggleFavoriteUseCase: ToggleFavoriteUseCase,
+    private val observeFavoriteIdsUseCase: ObserveFavoriteIdsUseCase
 ) : ViewModel() {
 
     private val _uiState: MutableStateFlow<MainUiState> = MutableStateFlow(MainUiState())
@@ -32,11 +34,10 @@ class MainViewModel @Inject constructor(
     private fun loadCourses() {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
-            coursesRepository.getCourses().fold(
+            getCoursesUseCase().fold(
                 onSuccess = { courses ->
                     // Загружаем избранные курсы и обновляем hasLike
-                    val favoritesList = favoriteCourseDao.getAllFavorites().first()
-                    val favoriteIdsSet = favoritesList.map { it.courseId }.toSet()
+                    val favoriteIdsSet = observeFavoriteIdsUseCase().first()
                     val updatedCourses = courses.map { course ->
                         course.copy(hasLike = course.id in favoriteIdsSet)
                     }
@@ -52,8 +53,7 @@ class MainViewModel @Inject constructor(
 
     private fun observeFavorites() {
         viewModelScope.launch {
-            favoriteCourseDao.getAllFavorites()
-                .map { favorites -> favorites.map { it.courseId }.toSet() }
+            observeFavoriteIdsUseCase()
                 .collect { favoriteIdsSet ->
                     // Обновляем состояние избранного для всех курсов только если курсы уже загружены
                     _uiState.update { currentState ->
@@ -77,14 +77,9 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun toggleFavorite(course: com.example.core.network.data.Course) {
+    fun toggleFavorite(course: Course) {
         viewModelScope.launch {
-            val existingFavorite = favoriteCourseDao.getFavoriteByCourseId(course.id)
-            if (existingFavorite != null) {
-                favoriteCourseDao.deleteByCourseId(course.id)
-            } else {
-                favoriteCourseDao.insertFavorite(course.toFavoriteEntity())
-            }
+            toggleFavoriteUseCase(course)
             // Обновляем состояние курсов локально
             _uiState.update { currentState ->
                 val updatedCourses = currentState.courses.map { c ->
@@ -99,8 +94,3 @@ class MainViewModel @Inject constructor(
         }
     }
 }
-
-
-
-
-

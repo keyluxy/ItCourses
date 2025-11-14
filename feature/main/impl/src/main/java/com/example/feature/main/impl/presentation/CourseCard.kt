@@ -36,7 +36,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.core.R as coreR
-import com.example.core.network.data.Course
+import com.example.core.domain.model.Course
 
 @Composable
 fun CourseCard(
@@ -49,7 +49,6 @@ fun CourseCard(
     val favoriteInteractionSource = remember { MutableInteractionSource() }
     var isFavorite by remember { mutableStateOf(course.hasLike) }
     
-    // Синхронизируем состояние избранного с данными курса
     LaunchedEffect(course.hasLike) {
         isFavorite = course.hasLike
     }
@@ -66,13 +65,11 @@ fun CourseCard(
             ) { onCardClick() }
     ) {
         Column {
-            // Верхняя часть с изображением
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(114.dp)
             ) {
-                // Изображение курса
                 Image(
                     painter = painterResource(id = imageResId),
                     contentDescription = null,
@@ -83,7 +80,6 @@ fun CourseCard(
                     contentScale = ContentScale.Crop
                 )
 
-                // Контейнеры с рейтингом и датой в нижнем левом углу
                 Row(
                     modifier = Modifier
                         .align(Alignment.BottomStart)
@@ -91,7 +87,6 @@ fun CourseCard(
                     horizontalArrangement = Arrangement.spacedBy(4.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    // Контейнер с рейтингом
                     Box(
                         modifier = Modifier
                             .width(46.dp)
@@ -121,7 +116,6 @@ fun CourseCard(
                         }
                     }
 
-                    // Контейнер с датой
                     Box(
                         modifier = Modifier
                             .width(87.dp)
@@ -138,7 +132,6 @@ fun CourseCard(
                     }
                 }
 
-                // Иконка закладки в правом верхнем углу
                 Box(
                     modifier = Modifier
                         .align(Alignment.TopEnd)
@@ -168,14 +161,12 @@ fun CourseCard(
                 }
             }
 
-            // Нижняя часть с информацией
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp)
             ) {
                 Column {
-                    // Название курса (заголовок)
                     Text(
                         text = course.title,
                         color = colorResource(id = coreR.color.white),
@@ -184,7 +175,6 @@ fun CourseCard(
                         modifier = Modifier.padding(bottom = 8.dp)
                     )
 
-                    // Описание курса (основной текст)
                     Text(
                         text = course.text,
                         color = colorResource(id = coreR.color.white),
@@ -197,13 +187,11 @@ fun CourseCard(
                         modifier = Modifier.padding(bottom = 12.dp)
                     )
 
-                    // Цена и кнопка "Подробнее"
                     Row(
                         modifier = Modifier.fillMaxWidth().height(IntrinsicSize.Min),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        // Цена слева
                         Text(
                             text = "${course.price} Р",
                             color = colorResource(id = coreR.color.white),

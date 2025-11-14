@@ -11,7 +11,6 @@ import com.example.impl.presentation.viewmodel.AuthViewModel
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.example.impl.presentation.viewmodel.AuthNavigationEvent
 
-// feature-auth-impl/src/main/java/com/example/impl/presentation/ui/register/RegistrationScreen.kt
 @Composable
 fun RegistrationScreen(
     onRegisterSuccess: () -> Unit,

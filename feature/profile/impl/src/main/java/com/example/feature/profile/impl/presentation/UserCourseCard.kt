@@ -43,7 +43,7 @@ fun UserCourseCard(
 ) {
     val cardInteractionSource = remember { MutableInteractionSource() }
     val favoriteInteractionSource = remember { MutableInteractionSource() }
-    var isFavorite by remember { mutableStateOf(true) } // Курсы в профиле всегда в избранном
+    var isFavorite by remember { mutableStateOf(true) }
 
     Box(
         modifier = Modifier
@@ -57,13 +57,11 @@ fun UserCourseCard(
             ) { onCardClick() }
     ) {
         Column {
-            // Верхняя часть с изображением
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(114.dp)
             ) {
-                // Изображение курса
                 Image(
                     painter = painterResource(id = course.imageResId),
                     contentDescription = null,
@@ -74,7 +72,6 @@ fun UserCourseCard(
                     contentScale = ContentScale.Crop
                 )
 
-                // Контейнеры с рейтингом и датой в нижнем левом углу
                 Row(
                     modifier = Modifier
                         .align(Alignment.BottomStart)
@@ -82,7 +79,6 @@ fun UserCourseCard(
                     horizontalArrangement = Arrangement.spacedBy(4.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    // Контейнер с рейтингом
                     Box(
                         modifier = Modifier
                             .width(46.dp)
@@ -110,7 +106,6 @@ fun UserCourseCard(
                         }
                     }
 
-                    // Контейнер с датой
                     Box(
                         modifier = Modifier
                             .width(87.dp)
@@ -127,7 +122,6 @@ fun UserCourseCard(
                     }
                 }
 
-                // Иконка закладки в правом верхнем углу
                 Box(
                     modifier = Modifier
                         .align(Alignment.TopEnd)
@@ -157,14 +151,12 @@ fun UserCourseCard(
                 }
             }
 
-            // Нижняя часть с информацией
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp)
             ) {
                 Column {
-                    // Название курса
                     Text(
                         text = course.title,
                         color = colorResource(id = coreR.color.white),
@@ -173,7 +165,6 @@ fun UserCourseCard(
                         modifier = Modifier.padding(bottom = 8.dp)
                     )
 
-                    // Прогресс и количество уроков
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -199,13 +190,12 @@ fun UserCourseCard(
                         )
                     }
 
-                    // Количество уроков
                     Row(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
                             text = "${course.currentLesson}/",
-                            color = Color(0xFFA0A0A0), // Серый цвет
+                            color = Color(0xFFA0A0A0),
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Normal
                         )

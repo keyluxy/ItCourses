@@ -1,6 +1,6 @@
 package com.example.feature.main.impl.presentation
 
-import com.example.core.network.data.Course
+import com.example.core.domain.model.Course
 
 data class MainUiState(
     val title: String = "Главная",

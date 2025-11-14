@@ -3,8 +3,8 @@ package com.example.core.di
 import android.content.Context
 import androidx.room.Room
 import com.example.core.database.AppDatabase
-import com.example.core.database.dao.FavoriteCourseDao
 import com.example.core.database.dao.UserDao
+import com.example.core.data.local.FavoriteCourseDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

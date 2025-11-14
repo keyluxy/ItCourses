@@ -1,4 +1,3 @@
-// app/src/main/java/com/example/itcourses/ui/MainScreen.kt
 package com.example.itcourses.ui
 
 import androidx.compose.foundation.layout.padding

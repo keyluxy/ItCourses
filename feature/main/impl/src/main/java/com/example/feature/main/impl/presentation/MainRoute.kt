@@ -57,7 +57,7 @@ fun MainRoute(
 internal fun MainScreen(
     uiState: MainUiState,
     onSortClick: () -> Unit = {},
-    onFavoriteClick: (com.example.core.network.data.Course) -> Unit = {}
+    onFavoriteClick: (com.example.core.domain.model.Course) -> Unit = {}
 ) {
     var searchText by remember { mutableStateOf("") }
     val filterInteractionSource = remember { MutableInteractionSource() }
@@ -69,7 +69,6 @@ internal fun MainScreen(
             .background(colorResource(id = coreR.color.screen_background))
     ) {
         if (uiState.isLoading) {
-            // Показываем loader по центру экрана
             CircularProgressIndicator(
                 modifier = Modifier.align(Alignment.Center),
                 color = colorResource(id = coreR.color.green)
@@ -81,14 +80,12 @@ internal fun MainScreen(
                 contentPadding = androidx.compose.foundation.layout.PaddingValues(16.dp)
             ) {
 
-                // 🔍 Поиск + фильтр
                 item {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        // Поисковая строка
                         Box(
                             modifier = Modifier
                                 .weight(1f)
@@ -133,7 +130,6 @@ internal fun MainScreen(
                             }
                         }
 
-                        // Фильтр
                         Box(
                             modifier = Modifier
                                 .size(56.dp)
@@ -155,7 +151,6 @@ internal fun MainScreen(
                     }
                 }
 
-                // 📌 Текст сортировки
                 item {
                     Row(
                         modifier = Modifier
@@ -186,13 +181,10 @@ internal fun MainScreen(
                     }
                 }
 
-                // 🟩 Карточки
                 itemsIndexed(
                     items = uiState.courses,
                     key = { _, course -> course.id }
                 ) { _, course ->
-                    // Используем ID курса для определения картинки, чтобы картинка была привязана к курсу, а не к позиции
-                    // Равномерно распределяем все три картинки по остатку от деления на 3
                     val imageResId = when (course.id % 3) {
                         1 -> coreR.drawable.ic_first_image
                         2 -> coreR.drawable.ic_second_image

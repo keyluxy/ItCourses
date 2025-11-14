@@ -10,6 +10,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -94,7 +96,8 @@ class BottomNavApiImpl @Inject constructor() : BottomNavApi {
                         Icon(
                             painter = painterResource(id = item.iconResId),
                             contentDescription = item.label,
-                            tint = if (isSelected) BottomNavDefaults.selectedIconColor else BottomNavDefaults.unselectedIconColor
+                            tint = if (isSelected) BottomNavDefaults.selectedIconColor else BottomNavDefaults.unselectedIconColor,
+                            modifier = Modifier.width(24.dp).height(24.dp)
                         )
                     },
                     label = {

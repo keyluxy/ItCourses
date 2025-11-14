@@ -50,7 +50,6 @@ internal fun ProfileScreen(
             .background(colorResource(id = coreR.color.screen_background))
             .padding(16.dp)
     ) {
-        // Заголовок
         Text(
             text = uiState.title,
             fontSize = 24.sp,
@@ -59,7 +58,6 @@ internal fun ProfileScreen(
             modifier = Modifier.padding(bottom = 24.dp)
         )
 
-        // Карточка с опциями
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -85,7 +83,6 @@ internal fun ProfileScreen(
             }
         }
 
-        // Заголовок "Ваши курсы"
         Text(
             text = "Ваши курсы",
             fontSize = 24.sp,
@@ -94,7 +91,6 @@ internal fun ProfileScreen(
             modifier = Modifier.padding(top = 32.dp, bottom = 16.dp)
         )
 
-        // Список курсов пользователя
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
