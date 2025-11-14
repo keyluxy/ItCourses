@@ -1,0 +1,1 @@
+-keep,allowobfuscation,allowshrinking class com.example.feature.profile.impl.presentation.viewmodel.ProfileViewModel

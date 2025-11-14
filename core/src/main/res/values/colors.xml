@@ -8,4 +8,8 @@
     <color name="disable_text">#68424542</color>
     <color name="field_background">#32333A</color>
     <color name="placeholder_color">#F2F2F3</color>
+    <color name="course_card_orange">#FF6B35</color>
+    <color name="course_card_dark">#2A2A2A</color>
+    <color name="blur">#32333A4D</color>
+    <color name="box">#32333A4D</color>
 </resources>
