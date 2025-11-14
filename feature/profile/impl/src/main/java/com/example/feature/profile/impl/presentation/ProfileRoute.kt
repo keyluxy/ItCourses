@@ -101,7 +101,8 @@ internal fun ProfileScreen(
             items(uiState.userCourses) { course ->
                 UserCourseCard(
                     course = course,
-                    onCardClick = { /* TODO */ }
+                    onCardClick = { /* TODO */ },
+                    onFavoriteClick = { /* TODO */ }
                 )
             }
         }

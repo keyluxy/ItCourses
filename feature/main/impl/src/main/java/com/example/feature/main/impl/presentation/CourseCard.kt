@@ -158,10 +158,12 @@ fun CourseCard(
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
-                        painter = painterResource(id = coreR.drawable.ic_favorities),
+                        painter = painterResource(
+                            id = if (isFavorite) coreR.drawable.ic_filter_done else coreR.drawable.ic_favorities
+                        ),
                         contentDescription = "Добавить в избранное",
-                        tint = if (isFavorite) colorResource(id = coreR.color.green) else Color.White,
-                        modifier = Modifier.size(28.dp)
+                        tint = if (isFavorite) Color.Unspecified else Color.White,
+                        modifier = Modifier.size(13.dp)
                     )
                 }
             }

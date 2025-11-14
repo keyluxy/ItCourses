@@ -18,7 +18,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -35,9 +38,12 @@ import com.example.core.network.data.UserCourse
 @Composable
 fun UserCourseCard(
     course: UserCourse,
-    onCardClick: () -> Unit = {}
+    onCardClick: () -> Unit = {},
+    onFavoriteClick: () -> Unit = {}
 ) {
     val cardInteractionSource = remember { MutableInteractionSource() }
+    val favoriteInteractionSource = remember { MutableInteractionSource() }
+    var isFavorite by remember { mutableStateOf(true) } // Курсы в профиле всегда в избранном
 
     Box(
         modifier = Modifier
@@ -121,23 +127,32 @@ fun UserCourseCard(
                     }
                 }
 
-                // Иконка в правом верхнем углу (зеленая галочка)
+                // Иконка закладки в правом верхнем углу
                 Box(
                     modifier = Modifier
                         .align(Alignment.TopEnd)
                         .padding(8.dp)
                         .size(28.dp)
                         .background(
-                            color = colorResource(id = coreR.color.green),
+                            color = colorResource(coreR.color.box),
                             RoundedCornerShape(20.dp)
-                        ),
+                        )
+                        .clickable(
+                            interactionSource = favoriteInteractionSource,
+                            indication = null
+                        ) {
+                            isFavorite = !isFavorite
+                            onFavoriteClick()
+                        },
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
-                        painter = painterResource(id = coreR.drawable.ic_ok),
-                        contentDescription = null,
-                        modifier = Modifier.size(16.dp),
-                        tint = Color.White
+                        painter = painterResource(
+                            id = if (isFavorite) coreR.drawable.ic_filter_done else coreR.drawable.ic_favorities
+                        ),
+                        contentDescription = "Добавить в избранное",
+                        tint = if (isFavorite) Color.Unspecified else Color.White,
+                        modifier = Modifier.size(13.dp)
                     )
                 }
             }
@@ -185,12 +200,22 @@ fun UserCourseCard(
                     }
 
                     // Количество уроков
-                    Text(
-                        text = "${course.currentLesson}/${course.totalLessons} уроков",
-                        color = colorResource(id = coreR.color.green),
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.Normal
-                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = "${course.currentLesson}/",
+                            color = Color(0xFFA0A0A0), // Серый цвет
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Normal
+                        )
+                        Text(
+                            text = "${course.totalLessons} уроков",
+                            color = colorResource(id = coreR.color.green),
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Normal
+                        )
+                    }
                 }
             }
         }
